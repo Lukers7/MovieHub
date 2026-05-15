@@ -6,7 +6,7 @@
 
 <h1>Film-Details</h1>
 
-@if (Movie is null)
+@if (EditModel is null)
 {
     <div class="alert alert-warning" role="alert">
         Film mit Id @Id nicht gefunden.
@@ -17,24 +17,46 @@ else
 {
     <div class="card shadow-sm">
         <div class="card-body">
-            <h2 class="h4 mb-3">@Movie.Title (@Movie.Year)</h2>
+            <h2 class="h4 mb-3">Bearbeiten (noch ohne Speichern)</h2>
 
-            <dl class="row mb-0">
-                <dt class="col-sm-3">Genre</dt>
-                <dd class="col-sm-9">@Movie.Genre</dd>
+            <EditForm Model="EditModel">
+                <div class="row g-3">
+                    <div class="col-12 col-md-8">
+                        <label class="form-label">Titel</label>
+                        <InputText class="form-control" @bind-Value="EditModel.Title" />
+                    </div>
 
-                <dt class="col-sm-3">Regie</dt>
-                <dd class="col-sm-9">@Movie.Director</dd>
+                    <div class="col-12 col-md-4">
+                        <label class="form-label">Jahr</label>
+                        <InputNumber class="form-control" @bind-Value="EditModel.Year" />
+                    </div>
 
-                <dt class="col-sm-3">Länge</dt>
-                <dd class="col-sm-9">@Movie.RuntimeMinutes min</dd>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Genre</label>
+                        <InputText class="form-control" @bind-Value="EditModel.Genre" />
+                    </div>
 
-                <dt class="col-sm-3">Rating</dt>
-                <dd class="col-sm-9">@Movie.Rating.ToString("0.0")</dd>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Regie</label>
+                        <InputText class="form-control" @bind-Value="EditModel.Director" />
+                    </div>
 
-                <dt class="col-sm-3">Notizen</dt>
-                <dd class="col-sm-9">@Movie.Notes</dd>
-            </dl>
+                    <div class="col-12 col-md-4">
+                        <label class="form-label">Länge (min)</label>
+                        <InputNumber class="form-control" @bind-Value="EditModel.RuntimeMinutes" />
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label class="form-label">Rating</label>
+                        <InputNumber class="form-control" @bind-Value="EditModel.Rating" />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Notizen</label>
+                        <InputTextArea class="form-control" rows="4" @bind-Value="EditModel.Notes" />
+                    </div>
+                </div>
+            </EditForm>
         </div>
         <div class="card-footer bg-white">
             <a class="btn btn-sm btn-outline-secondary" href="/">Zurück</a>
@@ -46,11 +68,12 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    private Movie? Movie { get; set; }
+    private MovieEditModel? EditModel { get; set; }
 
     protected override void OnParametersSet()
     {
-        Movie = Movies.FirstOrDefault(m => m.Id == Id);
+        var movie = Movies.FirstOrDefault(m => m.Id == Id);
+        EditModel = movie is null ? null : new MovieEditModel(movie);
     }
 
     private static readonly Movie[] Movies =
@@ -61,4 +84,30 @@ else
         new(4, "Spirited Away", 2001, "Animation/Fantasy", "Hayao Miyazaki", 125, 8.6m, "Studio Ghibli"),
         new(5, "Interstellar", 2014, "Sci‑Fi/Drama", "Christopher Nolan", 169, 8.7m, "Episch & emotional"),
     ];
+
+    private sealed class MovieEditModel
+    {
+        public MovieEditModel()
+        {
+        }
+
+        public MovieEditModel(Movie movie)
+        {
+            Title = movie.Title;
+            Year = movie.Year;
+            Genre = movie.Genre;
+            Director = movie.Director;
+            RuntimeMinutes = movie.RuntimeMinutes;
+            Rating = movie.Rating;
+            Notes = movie.Notes;
+        }
+
+        public string Title { get; set; } = "";
+        public int Year { get; set; }
+        public string Genre { get; set; } = "";
+        public string Director { get; set; } = "";
+        public int RuntimeMinutes { get; set; }
+        public decimal Rating { get; set; }
+        public string Notes { get; set; } = "";
+    }
 }

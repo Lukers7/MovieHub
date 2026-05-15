@@ -27,3 +27,4 @@ C:\Users\grube\OneDrive\Dokumente\New project\MovieHub\obj\Debug\net8.0\refint\M
 C:\Users\grube\OneDrive\Dokumente\New project\MovieHub\obj\Debug\net8.0\MovieHub.pdb
 C:\Users\grube\OneDrive\Dokumente\New project\MovieHub\obj\Debug\net8.0\MovieHub.genruntimeconfig.cache
 C:\Users\grube\OneDrive\Dokumente\New project\MovieHub\obj\Debug\net8.0\ref\MovieHub.dll
+C:\Users\grube\OneDrive\Dokumente\New project\MovieHub\obj\Debug\net8.0\MovieHub.sourcelink.json
