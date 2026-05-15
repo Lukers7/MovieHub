@@ -1,0 +1,64 @@
+@page "/movies/{Id:int}"
+
+@using MovieHub.Models
+
+<PageTitle>Movie Details</PageTitle>
+
+<h1>Film-Details</h1>
+
+@if (Movie is null)
+{
+    <div class="alert alert-warning" role="alert">
+        Film mit Id @Id nicht gefunden.
+    </div>
+    <a class="btn btn-sm btn-secondary" href="/">Zurück</a>
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="h4 mb-3">@Movie.Title (@Movie.Year)</h2>
+
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Genre</dt>
+                <dd class="col-sm-9">@Movie.Genre</dd>
+
+                <dt class="col-sm-3">Regie</dt>
+                <dd class="col-sm-9">@Movie.Director</dd>
+
+                <dt class="col-sm-3">Länge</dt>
+                <dd class="col-sm-9">@Movie.RuntimeMinutes min</dd>
+
+                <dt class="col-sm-3">Rating</dt>
+                <dd class="col-sm-9">@Movie.Rating.ToString("0.0")</dd>
+
+                <dt class="col-sm-3">Notizen</dt>
+                <dd class="col-sm-9">@Movie.Notes</dd>
+            </dl>
+        </div>
+        <div class="card-footer bg-white">
+            <a class="btn btn-sm btn-outline-secondary" href="/">Zurück</a>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Movie? Movie { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Movie = Movies.FirstOrDefault(m => m.Id == Id);
+    }
+
+    private static readonly Movie[] Movies =
+    [
+        new(1, "The Matrix", 1999, "Sci‑Fi/Action", "Lana & Lilly Wachowski", 136, 8.7m, "Klassiker der 90er"),
+        new(2, "Inception", 2010, "Sci‑Fi/Thriller", "Christopher Nolan", 148, 8.8m, "Mind‑bender"),
+        new(3, "Parasite", 2019, "Drama/Thriller", "Bong Joon-ho", 132, 8.5m, "Oscars 2020"),
+        new(4, "Spirited Away", 2001, "Animation/Fantasy", "Hayao Miyazaki", 125, 8.6m, "Studio Ghibli"),
+        new(5, "Interstellar", 2014, "Sci‑Fi/Drama", "Christopher Nolan", 169, 8.7m, "Episch & emotional"),
+    ];
+}
