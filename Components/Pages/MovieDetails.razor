@@ -1,5 +1,6 @@
 @page "/movies/{Id:int}"
 
+@using MovieHub.Logic
 @using MovieHub.Models
 
 <PageTitle>Movie Details</PageTitle>
@@ -18,6 +19,7 @@ else
     <div class="card shadow-sm">
         <div class="card-body">
             <h2 class="h4 mb-3">Bearbeiten (noch ohne Speichern)</h2>
+            <div class="text-muted mb-3">@MovieDetailsLogic.GetTitleLine(SourceMovie)</div>
 
             <EditForm Model="EditModel">
                 <div class="row g-3">
@@ -69,11 +71,13 @@ else
     public int Id { get; set; }
 
     private MovieEditModel? EditModel { get; set; }
+    private Movie SourceMovie { get; set; } = new(0, "", 0, "", "", 0, 0m, "");
 
     protected override void OnParametersSet()
     {
         var movie = Movies.FirstOrDefault(m => m.Id == Id);
         EditModel = movie is null ? null : new MovieEditModel(movie);
+        SourceMovie = movie ?? new Movie(0, "", 0, "", "", 0, 0m, "");
     }
 
     private static readonly Movie[] Movies =
